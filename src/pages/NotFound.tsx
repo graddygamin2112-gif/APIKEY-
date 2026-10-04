@@ -1,32 +1,46 @@
 import { useSeoMeta } from "@unhead/react";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Home, ArrowLeft, Film } from "lucide-react";
+import { SiteLayout } from "@/components/site/SiteLayout";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
-  const location = useLocation();
-
   useSeoMeta({
-    title: "404 - Page Not Found",
-    description: "The page you are looking for could not be found. Return to the home page to continue browsing.",
+    title: "404 — Page Not Found | CutForge Studio",
+    description:
+      "The page you are looking for could not be found. Return to CutForge Studio to explore features, pricing, tutorials and downloads.",
   });
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">404</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline">
-          Return to Home
-        </a>
+    <SiteLayout>
+      <div className="container flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+        <span className="grid size-16 place-items-center rounded-2xl bg-primary/12 text-primary ring-1 ring-primary/20">
+          <Film className="size-8" />
+        </span>
+        <p className="mt-6 font-display text-6xl font-bold text-gradient">404</p>
+        <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+          That take didn’t make the cut
+        </h1>
+        <p className="mt-3 max-w-md text-muted-foreground">
+          The page you were looking for is not on the timeline. Let’s get you back
+          to the edit.
+        </p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Button asChild size="lg" className="shadow-lg shadow-primary/20">
+            <Link to="/">
+              <Home />
+              Back to home
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline">
+            <Link to="/tutorials">
+              <ArrowLeft />
+              Browse tutorials
+            </Link>
+          </Button>
+        </div>
       </div>
-    </div>
+    </SiteLayout>
   );
 };
 

@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NostrLoginProvider } from '@nostrify/react/login';
 import { AppProvider } from '@/components/AppProvider';
+import { DownloadProvider } from '@/components/site/DownloadDialog';
 import { AppConfig } from '@/contexts/AppContext';
 import { APP_RELAYS } from '@/lib/appRelays';
 import AppRouter from './AppRouter';
@@ -32,7 +33,7 @@ const queryClient = new QueryClient({
 });
 
 const defaultConfig: AppConfig = {
-  theme: "light",
+  theme: "dark",
   relayMetadata: APP_RELAYS,
   blossomServerMetadata: {
     servers: [
@@ -55,9 +56,11 @@ export function App() {
               <NostrSync />
               <TooltipProvider>
                 <Toaster />
-                <Suspense>
-                  <AppRouter />
-                </Suspense>
+                <DownloadProvider>
+                  <Suspense>
+                    <AppRouter />
+                  </Suspense>
+                </DownloadProvider>
               </TooltipProvider>
             </NostrProvider>
           </NostrLoginProvider>
