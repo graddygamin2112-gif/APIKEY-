@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDownload } from './DownloadDialog';
@@ -52,7 +53,7 @@ export function CtaBand({
             </Button>
           </Magnetic>
           <Button size="lg" variant="outline" asChild>
-            <a href="/pricing">Compare plans</a>
+            <Link to="/pricing">Compare plans</Link>
           </Button>
         </div>
 

@@ -302,7 +302,7 @@ const Features = () => {
                       <dive.icon className="size-10 text-primary" aria-hidden="true" />
                       <p className="font-display text-xl font-semibold">
                         {dive.id === 'ai' && '“Cut a 45-second teaser from the best moments.”'}
-                        {dive.id === 'color' && 'Teal &amp; Orange 35mm · Node 04 of 07'}
+                        {dive.id === 'color' && 'Teal & Orange 35mm · Node 04 of 07'}
                         {dive.id === 'collab' && '4 editors online · 12 comments · v14'}
                       </p>
                       <div className="space-y-2">

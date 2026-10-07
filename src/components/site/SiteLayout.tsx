@@ -92,7 +92,7 @@ function SiteHeader() {
           </Button>
           <Magnetic strength={6}>
             <Button asChild size="sm" className="shadow-lg shadow-primary/20">
-              <a href="#download">Download free</a>
+              <Link to="/#download">Download free</Link>
             </Button>
           </Magnetic>
         </div>
@@ -197,7 +197,7 @@ function SiteFooter() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="sm" className="shadow-lg shadow-primary/20">
-                <a href="#download">Download free</a>
+                <Link to="/#download">Download free</Link>
               </Button>
               <Button asChild size="sm" variant="outline">
                 <Link to="/pricing">See pricing</Link>
