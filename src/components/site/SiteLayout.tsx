@@ -92,13 +92,11 @@ function SiteHeader() {
           </Button>
           <Magnetic strength={6}>
             <Button asChild size="sm" className="shadow-lg shadow-primary/20">
-              <Link to="/#download">Download free</Link>
+              <a href="#download">Download free</a>
             </Button>
           </Magnetic>
         </div>
       </div>
-
-      <ScrollProgress />
 
       {/* Mobile nav */}
       <nav aria-label="Primary mobile" className="border-t border-border/60 md:hidden">
@@ -115,40 +113,6 @@ function SiteHeader() {
         </div>
       </nav>
     </header>
-  );
-}
-
-/** Reading-progress bar pinned to the bottom edge of the header. */
-function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0);
-    };
-    const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  return (
-    <div className="absolute inset-x-0 -bottom-px h-0.5 overflow-hidden" aria-hidden="true">
-      <div
-        className="h-full origin-left bg-gradient-to-r from-brand-cyan via-brand-violet to-brand-magenta transition-transform duration-100 ease-out"
-        style={{ transform: `scaleX(${progress})` }}
-      />
-    </div>
   );
 }
 
@@ -197,7 +161,7 @@ function SiteFooter() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="sm" className="shadow-lg shadow-primary/20">
-                <Link to="/#download">Download free</Link>
+                <a href="#download">Download free</a>
               </Button>
               <Button asChild size="sm" variant="outline">
                 <Link to="/pricing">See pricing</Link>

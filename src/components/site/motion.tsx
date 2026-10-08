@@ -28,15 +28,9 @@ export function usePrefersReducedMotion(): boolean {
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
-   useInView — IntersectionObserver hook that toggles on BOTH enter and leave.
-
-   By default it is bidirectional: `inView` flips back to false when the element
-   scrolls out of the viewport, which lets Reveal replay its transition in
-   reverse. Pass `once: true` for the old fire-and-forget behaviour.
+   useInView — IntersectionObserver once-trigger hook.
    ──────────────────────────────────────────────────────────────────────────── */
-export function useInView<T extends HTMLElement>(
-  options?: IntersectionObserverInit & { once?: boolean },
-) {
+export function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
   const optionsRef = useRef(options);
@@ -44,24 +38,14 @@ export function useInView<T extends HTMLElement>(
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
-    const { once = false, threshold, rootMargin, root } = optionsRef.current ?? {};
-    if (once && inView) return;
+    if (!node || inView) return;
 
-    // A trigger line ~12% above the fold bottom. `threshold: 0` + isIntersecting
-    // works for elements of any height (ratio thresholds break on tall sections),
-    // and flips false again as the element leaves, so reveals replay in reverse.
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInView(entry.isIntersecting);
-        if (once && entry.isIntersecting) observer.disconnect();
-      },
-      {
-        threshold: threshold ?? 0,
-        rootMargin: rootMargin ?? '0px 0px -12% 0px',
-        root: root ?? null,
-      },
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setInView(true);
+        observer.disconnect();
+      }
+    }, optionsRef.current ?? { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
 
     observer.observe(node);
     return () => observer.disconnect();
@@ -97,7 +81,7 @@ export function Reveal({
       ref={ref}
       data-reveal={variant}
       data-revealed={inView}
-      style={{ '--reveal-delay': `${delay}ms` } as CSSProperties}
+      style={{ transitionDelay: `${delay}ms` } as CSSProperties}
       className={className}
     >
       {children}
@@ -313,7 +297,7 @@ export function Counter({
   className,
   duration = 1400,
 }: CounterProps) {
-  const { ref, inView } = useInView<HTMLSpanElement>({ threshold: 0.4, once: true });
+  const { ref, inView } = useInView<HTMLSpanElement>({ threshold: 0.4 });
   const reduced = usePrefersReducedMotion();
   const [display, setDisplay] = useState(0);
 
