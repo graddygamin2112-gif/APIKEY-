@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://graddygamin2112-gif.github.io/APIKEY-/sitemap.xml
+Sitemap: https://videoeditingsoftware.netlify.app/sitemap.xml

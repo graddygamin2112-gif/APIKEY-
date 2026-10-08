@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CutForge Studio social share card (Open Graph / Twitter).
+
+  Source asset for the 1200x630 og:image. Social platforms do NOT reliably
+  render SVG, so export this to PNG before wiring up the meta tag:
+
+    - Browser: open this file, screenshot at 1200x630, or
+    - CLI:     rsvg-convert -w 1200 -h 630 og-image.svg -o og-image.png
+    - Online:  any SVG -> PNG converter at 1200x630
+
+  Then commit public/og-image.png and add to index.html:
+    <meta property="og:image" content="https://videoeditingsoftware.netlify.app/og-image.png">
+    <meta name="twitter:image" content="https://videoeditingsoftware.netlify.app/og-image.png">
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="Inter, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22D3EE" />
+      <stop offset="0.5" stop-color="#7C3AED" />
+      <stop offset="1" stop-color="#EC4899" />
+    </linearGradient>
+    <linearGradient id="headline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE" />
+      <stop offset="0.5" stop-color="#A78BFA" />
+      <stop offset="1" stop-color="#EC4899" />
+    </linearGradient>
+    <linearGradient id="clipA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7C3AED" />
+      <stop offset="1" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="clipB" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#06B6D4" />
+      <stop offset="1" stop-color="#3B82F6" />
+    </linearGradient>
+    <linearGradient id="clipC" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F59E0B" />
+      <stop offset="1" stop-color="#EF4444" />
+    </linearGradient>
+    <radialGradient id="auroraA" cx="0.15" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="auroraB" cx="0.9" cy="0.85" r="0.7">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.4" />
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="auroraC" cx="0.8" cy="0.1" r="0.6">
+      <stop offset="0" stop-color="#EC4899" stop-opacity="0.32" />
+      <stop offset="1" stop-color="#EC4899" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#2A3350" stroke-width="1" stroke-opacity="0.5" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0A0D1A" />
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.5" />
+  <rect width="1200" height="630" fill="url(#auroraA)" />
+  <rect width="1200" height="630" fill="url(#auroraB)" />
+  <rect width="1200" height="630" fill="url(#auroraC)" />
+
+  <!-- Top hairline accent -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#brand)" />
+
+  <!-- Logo mark -->
+  <g transform="translate(80, 74)">
+    <rect width="72" height="72" rx="18" fill="url(#brand)" />
+    <path d="M29 22 L50 36 L29 50 Z" fill="#0B0F1E" opacity="0.9" />
+    <path d="M18 18 L38 36 L18 54" stroke="#0B0F1E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
+    <circle cx="53" cy="19" r="5" fill="#FDE68A" />
+  </g>
+
+  <!-- Wordmark -->
+  <text x="176" y="128" fill="#F4F6FB" font-size="42" font-weight="700" letter-spacing="-0.5">Cut<tspan fill="url(#brand)">Forge</tspan></text>
+  <text x="356" y="128" fill="#8A93AC" font-size="20" font-weight="600" letter-spacing="4">STUDIO</text>
+
+  <!-- Headline -->
+  <text x="80" y="268" fill="#F4F6FB" font-size="66" font-weight="700" letter-spacing="-1.5">Professional video editing</text>
+  <text x="80" y="348" fill="#F4F6FB" font-size="66" font-weight="700" letter-spacing="-1.5">at <tspan fill="url(#headline)">8K, real time.</tspan></text>
+
+  <!-- Subheadline -->
+  <text x="80" y="410" fill="#AEB7CE" font-size="27" font-weight="400">An AI collaborator that understands story, cinema color and</text>
+  <text x="80" y="448" fill="#AEB7CE" font-size="27" font-weight="400">broadcast audio — with one-click delivery to every platform.</text>
+
+  <!-- Timeline strip -->
+  <g transform="translate(80, 496)">
+    <rect x="0" y="0" width="1040" height="76" rx="14" fill="#141A2E" stroke="#26304A" />
+    <!-- playhead -->
+    <rect x="286" y="8" width="2.5" height="60" fill="#22D3EE" />
+    <path d="M287 4 l6 8 l-12 0 z" fill="#22D3EE" />
+    <!-- clip rows -->
+    <rect x="20" y="14" width="300" height="20" rx="5" fill="url(#clipA)" />
+    <rect x="336" y="14" width="430" height="20" rx="5" fill="url(#clipB)" />
+    <rect x="782" y="14" width="238" height="20" rx="5" fill="url(#clipC)" />
+    <rect x="20" y="42" width="560" height="20" rx="5" fill="#22D3EE" opacity="0.35" />
+    <rect x="596" y="42" width="424" height="20" rx="5" fill="#7C3AED" opacity="0.35" />
+  </g>
+
+  <!-- Footer URL -->
+  <text x="80" y="612" fill="#6E7793" font-size="20" font-weight="500">videoeditingsoftware.netlify.app</text>
+  <g transform="translate(1020, 592)">
+    <rect x="0" y="-18" width="100" height="30" rx="15" fill="none" stroke="#2E3A57" />
+    <text x="50" y="3" fill="#9AA4BE" font-size="14" font-weight="600" text-anchor="middle">8K · 120</text>
+  </g>
+</svg>
