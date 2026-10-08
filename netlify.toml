@@ -1,0 +1,16 @@
+# Netlify configuration.
+#
+# IMPORTANT: do NOT set VITE_BASE_PATH here. Netlify serves this site from the
+# domain root ("/"), which is the default the build expects. VITE_BASE_PATH is
+# only for subpath hosts like GitHub Pages project sites.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Vite 8 / TypeScript 6 require a modern Node runtime.
+  NODE_VERSION = "22"
+
+# SPA fallback is already handled by `public/_redirects` (copied into dist),
+# so no redirect rules are needed here.
