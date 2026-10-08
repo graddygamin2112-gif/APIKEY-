@@ -161,7 +161,7 @@ function SiteFooter() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="sm" className="shadow-lg shadow-primary/20">
-<Link to="/#download">Download free</Link>
+                <Link to="/#download">Download free</Link>
               </Button>
               <Button asChild size="sm" variant="outline">
                 <Link to="/pricing">See pricing</Link>
