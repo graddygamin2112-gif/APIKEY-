@@ -38,6 +38,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies and build
+        env:
+          # GitHub Pages project sites are served from /<repo>/, so assets and
+          # routes must be prefixed accordingly. Root-served hosts omit this.
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
         run: |
           npm install
           npm run build

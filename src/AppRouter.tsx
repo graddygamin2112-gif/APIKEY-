@@ -10,8 +10,14 @@ import { NIP19Page } from "./pages/NIP19Page";
 import NotFound from "./pages/NotFound";
 
 export function AppRouter() {
+  // `VITE_BASE_PATH` is set by subpath hosts (e.g. GitHub Pages project sites
+  // served at /APIKEY-/). It is injected at build time by Vite, so it is
+  // undefined on root-served hosts (Netlify, Cloudflare Pages, Vercel), where
+  // no basename is needed.
+  const basename = import.meta.env.VITE_BASE_PATH?.replace(/\/$/, '') || undefined;
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Index />} />

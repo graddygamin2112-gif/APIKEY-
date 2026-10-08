@@ -6,6 +6,10 @@ import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  // `VITE_BASE_PATH` lets subpath hosts (e.g. GitHub Pages project sites at
+  // /APIKEY-/) serve correctly. Root-served hosts (Netlify, Cloudflare Pages,
+  // Vercel) leave it unset and get "/".
+  base: process.env.VITE_BASE_PATH ?? "/",
   server: {
     host: "::",
     port: 8080,
