@@ -22,6 +22,7 @@ import { BillingToggle } from '@/components/site/BillingToggle';
 import { CtaBand, LogoStrip } from '@/components/site/CtaBand';
 import { useDownload } from '@/components/site/DownloadDialog';
 import { Counter, Magnetic, Parallax, Reveal, TiltCard } from '@/components/site/motion';
+import { MarqueeBand, SplitText } from '@/components/site/premium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -122,7 +123,7 @@ const Home = () => {
 
               <Reveal delay={60}>
                 <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl lg:leading-[1.05]">
-                  The video editor that thinks{' '}
+                  <SplitText text="The video editor that thinks" />
                   <span className="relative inline-block">
                     <span
                       key={wordIndex}
@@ -210,6 +211,9 @@ const Home = () => {
           <LogoStrip items={trustedBy} />
         </Reveal>
       </Section>
+
+      {/* ───────────────────────── Kinetic type band ───────────────────────── */}
+      <MarqueeBand />
 
       {/* ───────────────────────── Feature grid ───────────────────────── */}
       <Section id="features" className="pt-4">

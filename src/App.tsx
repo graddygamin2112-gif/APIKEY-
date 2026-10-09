@@ -12,6 +12,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { NostrLoginProvider } from '@nostrify/react/login';
 import { AppProvider } from '@/components/AppProvider';
 import { DownloadProvider } from '@/components/site/DownloadDialog';
+import { Cursor, GrainOverlay } from '@/components/site/premium';
 import { AppConfig } from '@/contexts/AppContext';
 import { APP_RELAYS } from '@/lib/appRelays';
 import AppRouter from './AppRouter';
@@ -57,6 +58,8 @@ export function App() {
               <TooltipProvider>
                 <Toaster />
                 <DownloadProvider>
+                  <GrainOverlay />
+                  <Cursor />
                   <Suspense>
                     <AppRouter />
                   </Suspense>
