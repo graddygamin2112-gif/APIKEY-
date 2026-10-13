@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from './motion';
@@ -134,9 +134,18 @@ export function Cursor() {
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
-   MarqueeBand — oversized kinetic type band. Pairs a filled and an outlined
-   pass of the same phrase list for editorial contrast. Reuses the existing
-   `marquee` keyframe (translateX 0 -> -50%) with two duplicated passes.
+   MarqueeBand — oversized kinetic type band that reacts to scroll velocity.
+
+   Award-site flourish (the "scroll-velocity marquee"): the strip idles at a
+   lazy drift, then accelerates, skews into the direction of travel, and even
+   reverses when you scroll up. One scroll listener only *records* the delta;
+   a single rAF loop does every write (never write transforms inside a scroll
+   handler). See the reference implementation rationale:
+   https://codefronts.com/motion/css-infinite-marquee/scroll-velocity-reactive-marquee/
+
+   Renders two identical copies of the phrase list so the modulo wrap
+   (`x % half`) is seamless at any speed. Under reduced motion the listener is
+   never attached and the band stays perfectly static.
    ──────────────────────────────────────────────────────────────────────────── */
 const DEFAULT_BAND = [
   'Real-time 8K',
@@ -149,17 +158,96 @@ const DEFAULT_BAND = [
 
 export function MarqueeBand({
   items = DEFAULT_BAND,
-  reverse = false,
-  duration = 38,
   className,
+  speed = 55,
+  velocityFactor = 0.22,
+  maxSkew = 9,
 }: {
   items?: string[];
-  reverse?: boolean;
-  duration?: number;
   className?: string;
+  /** Idle drift in px/second. */
+  speed?: number;
+  /** How strongly page scroll drives the strip. 0.5+ is chaotic, 0.1 subtle. */
+  velocityFactor?: number;
+  /** Maximum skew lean, in degrees. */
+  maxSkew?: number;
 }) {
-  const row = (outlined: boolean) => (
-    <div className="flex shrink-0 items-center">
+  const reduced = usePrefersReducedMotion();
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reduced) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    let x = 0;
+    let half = 0;
+    let velocity = 0;
+    let smooth = 0;
+    let lastScroll = window.scrollY;
+    let prev = performance.now();
+    let raf = 0;
+    let visible = true;
+
+    const measure = () => {
+      // Two identical copies are rendered, so one copy is exactly half.
+      half = track.scrollWidth / 2;
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+
+    // The scroll handler only records; direction is implied by the sign.
+    const onScroll = () => {
+      velocity += (window.scrollY - lastScroll) * 0.6;
+      lastScroll = window.scrollY;
+    };
+
+    const frame = (now: number) => {
+      if (!visible) {
+        raf = 0;
+        return;
+      }
+      const dt = Math.min((now - prev) / 1000, 0.05);
+      prev = now;
+
+      velocity *= 0.9; // decay: the effect relaxes when scrolling stops
+      smooth += (velocity - smooth) * 0.1; // lerp: spiky wheel → liquid motion
+      x += (speed + smooth * velocityFactor) * dt;
+      if (half > 0) x = ((x % half) + half) % half; // modulo = no seam
+
+      const skew = Math.max(-maxSkew, Math.min(maxSkew, -smooth * 0.04));
+      track.style.transform = `translate3d(${-x}px, 0, 0) skewX(${skew}deg)`;
+
+      raf = requestAnimationFrame(frame);
+    };
+
+    // Pause the loop while off-screen so an idle page costs nothing.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !raf) {
+          prev = performance.now();
+          raf = requestAnimationFrame(frame);
+        }
+      },
+      { rootMargin: '120px' },
+    );
+    io.observe(track);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      io.disconnect();
+      ro.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reduced, speed, velocityFactor, maxSkew]);
+
+  const row = (outlined: boolean, copy: number) => (
+    <div className="flex shrink-0 items-center" aria-hidden={copy > 0 ? 'true' : undefined}>
       {items.map((item, i) => (
         <span key={`${item}-${i}`} className="flex items-center">
           <span
@@ -180,20 +268,14 @@ export function MarqueeBand({
 
   return (
     <div
-      aria-hidden="true"
       className={cn(
         'relative flex overflow-hidden border-y border-border/60 py-6 select-none [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]',
         className,
       )}
     >
-      <div
-        className={cn('flex w-max animate-marquee items-center', reverse && '[animation-direction:reverse]')}
-        style={{ animationDuration: `${duration}s` }}
-      >
-        {row(false)}
-        {row(true)}
-        {row(false)}
-        {row(true)}
+      <div ref={trackRef} className="flex w-max items-center will-change-transform">
+        {row(false, 0)}
+        {row(true, 1)}
       </div>
     </div>
   );
@@ -223,11 +305,14 @@ export function SplitText({
   className,
   delay = 0,
   step = 60,
+  blur = true,
 }: {
   text: string;
   className?: string;
   delay?: number;
   step?: number;
+  /** Start each word slightly blurred and resolved (the "BlurText" reveal). */
+  blur?: boolean;
 }) {
   const words = text.split(' ');
   return (
@@ -238,7 +323,10 @@ export function SplitText({
         <Fragment key={`${word}-${i}`}>
           <span className="inline-block overflow-hidden align-bottom pb-[0.14em]">
             <span
-              className="inline-block animate-rise will-change-transform"
+              className={cn(
+                'inline-block will-change-transform',
+                blur ? 'animate-rise-blur' : 'animate-rise',
+              )}
               style={{ animationDelay: `${delay + i * step}ms` }}
             >
               {word}
@@ -248,5 +336,55 @@ export function SplitText({
         </Fragment>
       ))}
     </span>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   ClipReveal — unclips its content as it scrolls into view (inset clip-path
+   wipe), settling to a full frame. Award sites use this to make media feel
+   "revealed" rather than merely faded. Transform/clip-path only, fired once,
+   and disabled under reduced motion where the content simply shows.
+   ──────────────────────────────────────────────────────────────────────────── */
+export function ClipReveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.dataset.revealed = 'true';
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.dataset.revealed = 'true';
+        observer.disconnect();
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      data-clip
+      style={{ '--clip-delay': `${delay}ms` } as CSSProperties}
+      className={className}
+    >
+      {children}
+    </div>
   );
 }

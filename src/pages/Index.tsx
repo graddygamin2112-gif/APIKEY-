@@ -22,7 +22,7 @@ import { BillingToggle } from '@/components/site/BillingToggle';
 import { CtaBand, LogoStrip } from '@/components/site/CtaBand';
 import { useDownload } from '@/components/site/DownloadDialog';
 import { Counter, Magnetic, Parallax, Reveal, TiltCard } from '@/components/site/motion';
-import { MarqueeBand, SplitText } from '@/components/site/premium';
+import { ClipReveal, MarqueeBand, SplitText } from '@/components/site/premium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -193,9 +193,11 @@ const Home = () => {
                 aria-hidden="true"
                 className="absolute -inset-6 -z-10 animate-glow-pulse rounded-[2rem] bg-gradient-to-br from-brand-violet/25 via-transparent to-brand-cyan/20 blur-2xl"
               />
-              <Parallax speed={0.06}>
-                <EditorMockup />
-              </Parallax>
+              <ClipReveal>
+                <Parallax speed={0.06}>
+                  <EditorMockup />
+                </Parallax>
+              </ClipReveal>
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 Live preview — the real CutForge timeline, mocked in your browser
               </p>
