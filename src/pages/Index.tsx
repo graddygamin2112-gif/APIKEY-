@@ -121,19 +121,17 @@ const Home = () => {
                 <Eyebrow>Version 6 · Real-time 8K</Eyebrow>
               </Reveal>
 
-              <Reveal delay={60}>
-                <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl lg:leading-[1.05]">
-                  <SplitText text="The video editor that thinks" />
-                  <span className="relative inline-block">
-                    <span
-                      key={wordIndex}
-                      className="text-gradient-animate inline-block animate-in fade-in slide-in-from-bottom-2 duration-500"
-                    >
-                      {rotatingWords[wordIndex]}
-                    </span>
+              <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl lg:leading-[1.05]">
+                <SplitText text="The video editor that thinks" />
+                <span className="relative inline-block">
+                  <span
+                    key={wordIndex}
+                    className="text-gradient-animate inline-block animate-in fade-in slide-in-from-bottom-2 duration-500"
+                  >
+                    {rotatingWords[wordIndex]}
                   </span>
-                </h1>
-              </Reveal>
+                </span>
+              </h1>
 
               <Reveal delay={120}>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">

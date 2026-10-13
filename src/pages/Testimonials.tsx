@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSeoMeta } from '@unhead/react';
 import { ArrowRight, Quote, Star, TrendingUp } from 'lucide-react';
 import { SiteLayout, Section, SectionHeading } from '@/components/site/SiteLayout';
@@ -256,9 +257,9 @@ const Testimonials = () => {
 
         <Reveal delay={80} className="mt-10 flex justify-center">
           <Button size="lg" variant="outline" asChild>
-            <a href="/#download">
+            <Link to="/#download">
               Join them — download free <ArrowRight />
-            </a>
+            </Link>
           </Button>
         </Reveal>
       </Section>

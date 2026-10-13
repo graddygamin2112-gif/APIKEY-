@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from './motion';
@@ -199,7 +199,7 @@ export function MarqueeBand({
    keying off the pathname. Marketing pages rebuild on navigation anyway, so
    the remount cost is negligible and it removes the hard "flash" between pages.
    ──────────────────────────────────────────────────────────────────────────── */
-export function PageTransition({ children }: { children: React.ReactNode }) {
+export function PageTransition({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   return (
     <div key={pathname} className="animate-page-in">
@@ -228,15 +228,19 @@ export function SplitText({
   return (
     <span className={className}>
       {words.map((word, i) => (
-        <span key={`${word}-${i}`} className="inline-flex overflow-hidden pb-[0.12em] align-bottom">
-          <span
-            className="animate-rise will-change-transform"
-            style={{ animationDelay: `${delay + i * step}ms` }}
-          >
-            {word}
+        // The space lives *between* the masks (not inside), so words keep
+        // normal spacing and lines can still wrap at the spaces.
+        <Fragment key={`${word}-${i}`}>
+          <span className="inline-block overflow-hidden align-bottom pb-[0.14em]">
+            <span
+              className="inline-block animate-rise will-change-transform"
+              style={{ animationDelay: `${delay + i * step}ms` }}
+            >
+              {word}
+            </span>
           </span>
-          {i < words.length - 1 ? <span className="whitespace-pre"> </span> : null}
-        </span>
+          {i < words.length - 1 ? ' ' : null}
+        </Fragment>
       ))}
     </span>
   );
