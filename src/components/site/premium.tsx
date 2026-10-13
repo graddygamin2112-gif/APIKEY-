@@ -35,19 +35,24 @@ export function Cursor() {
   const reduced = usePrefersReducedMotion();
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
   const [active, setActive] = useState(false);
 
+  // Computed synchronously (not in an effect) so the cursor elements and their
+  // refs exist on the very first effect pass. Setting this from inside the
+  // effect would deadlock: the effect bails out when the refs are null, so it
+  // could never enable itself.
+  const [enabled] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: fine)').matches,
+  );
+
   useEffect(() => {
-    if (reduced) return;
-    if (typeof window === 'undefined') return;
-    if (!window.matchMedia('(pointer: fine)').matches) return;
+    if (!enabled || reduced) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
-
-    setEnabled(true);
 
     const root = document.documentElement;
     root.classList.add('has-custom-cursor');
@@ -104,7 +109,7 @@ export function Cursor() {
       document.removeEventListener('mouseleave', onLeave);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [reduced]);
+  }, [enabled, reduced]);
 
   if (!enabled) return null;
 

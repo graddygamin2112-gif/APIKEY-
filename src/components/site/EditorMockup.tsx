@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import {
   Play,
   Pause,
@@ -62,6 +62,9 @@ function Waveform({ className }: { className?: string }) {
 export function EditorMockup({ className }: { className?: string }) {
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(28);
+  // Unique per instance so the scope gradient never collides if the mockup is
+  // rendered more than once on a page (SVG `url(#id)` resolves globally).
+  const scopeGradientId = useId();
 
   useEffect(() => {
     if (!playing) return;
@@ -226,7 +229,7 @@ export function EditorMockup({ className }: { className?: string }) {
           <div className="mt-3 space-y-1 rounded-lg border border-white/5 bg-black/40 p-2">
             <svg viewBox="0 0 100 40" className="h-16 w-full" aria-hidden="true">
               <defs>
-                <linearGradient id="scope" x1="0" y1="0" x2="1" y2="0">
+                <linearGradient id={scopeGradientId} x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0" stopColor="var(--brand-cyan)" />
                   <stop offset="1" stopColor="var(--brand-magenta)" />
                 </linearGradient>
@@ -241,7 +244,7 @@ export function EditorMockup({ className }: { className?: string }) {
                     width="1.6"
                     height={h}
                     rx="0.8"
-                    fill="url(#scope)"
+                    fill={`url(#${scopeGradientId})`}
                     opacity={0.85}
                   />
                 );

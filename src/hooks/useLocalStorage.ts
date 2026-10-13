@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * Generic hook for managing localStorage state
@@ -14,10 +14,16 @@ export function useLocalStorage<T>(
   const serialize = serializer?.serialize || JSON.stringify;
   const deserialize = serializer?.deserialize || JSON.parse;
 
+  // Callers frequently pass an inline serializer object, so these functions get
+  // a new identity every render. Hold them in refs so the cross-tab sync effect
+  // below can depend on `key` alone instead of re-subscribing on every render.
+  const deserializeRef = useRef(deserialize);
+  deserializeRef.current = deserialize;
+
   const [state, setState] = useState<T>(() => {
     try {
       const item = localStorage.getItem(key);
-      return item ? deserialize(item) : defaultValue;
+      return item ? deserializeRef.current(item) : defaultValue;
     } catch (error) {
       console.warn(`Failed to load ${key} from localStorage:`, error);
       return defaultValue;
@@ -39,7 +45,7 @@ export function useLocalStorage<T>(
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === key && e.newValue !== null) {
         try {
-          setState(deserialize(e.newValue));
+          setState(deserializeRef.current(e.newValue));
         } catch (error) {
           console.warn(`Failed to sync ${key} from localStorage:`, error);
         }
@@ -48,7 +54,7 @@ export function useLocalStorage<T>(
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [key, deserialize]);
+  }, [key]);
 
   return [state, setValue] as const;
 }

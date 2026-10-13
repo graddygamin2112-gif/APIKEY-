@@ -123,7 +123,8 @@ const Home = () => {
 
               <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl lg:leading-[1.05]">
                 <SplitText text="The video editor that thinks" />
-                <span className="relative inline-block">
+                {' '}
+                <span className="inline-block align-bottom pb-[0.14em]">
                   <span
                     key={wordIndex}
                     className="text-gradient-animate inline-block animate-in fade-in slide-in-from-bottom-2 duration-500"

@@ -141,8 +141,8 @@ const Pricing = () => {
         </Reveal>
 
         <Reveal variant="scale" delay={80} className="mt-12">
-          <div className="overflow-hidden rounded-2xl border border-border/70 bg-card/50">
-            <Table>
+          <div className="overflow-x-auto rounded-2xl border border-border/70 bg-card/50">
+            <Table className="min-w-[40rem]">
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
                   <TableHead className="min-w-[13rem] py-4 text-sm">Feature</TableHead>

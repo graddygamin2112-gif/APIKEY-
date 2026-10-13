@@ -224,7 +224,11 @@ const Tutorials = () => {
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div
+            className="flex flex-wrap items-center justify-center gap-2"
+            role="group"
+            aria-label="Filter tutorials by level"
+          >
             <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
               <Signal className="size-3.5" /> Level:
             </span>
