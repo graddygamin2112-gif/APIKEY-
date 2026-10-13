@@ -15,6 +15,7 @@ import { PricingCard, SpecValue } from '@/components/site/PricingCard';
 import { BillingToggle } from '@/components/site/BillingToggle';
 import { CtaBand } from '@/components/site/CtaBand';
 import { Reveal } from '@/components/site/motion';
+import { SplitText } from '@/components/site/premium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -85,11 +86,13 @@ const Pricing = () => {
                 <Sparkles className="size-3.5" /> 14-day Creator trial on every download
               </Badge>
             </Reveal>
-            <Reveal delay={60}>
-              <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                Start free. <span className="text-gradient-animate">Scale when you ship.</span>
-              </h1>
-            </Reveal>
+            <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              <SplitText
+                text="Start free. Scale when you ship."
+                delay={80}
+                highlightFrom={2}
+              />
+            </h1>
             <Reveal delay={120}>
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 Every plan includes the complete editing engine — the 8K timeline, the

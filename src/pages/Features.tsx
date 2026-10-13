@@ -13,6 +13,7 @@ import {
 import { SiteLayout, Section, SectionHeading } from '@/components/site/SiteLayout';
 import { CtaBand } from '@/components/site/CtaBand';
 import { Counter, Magnetic, Reveal, TiltCard } from '@/components/site/motion';
+import { SplitText } from '@/components/site/premium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -122,12 +123,13 @@ const Features = () => {
                 <Cpu className="size-3.5" /> Version 6 · 12 fully integrated toolsets
               </Badge>
             </Reveal>
-            <Reveal delay={60}>
-              <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                Every tool a professional edit needs,{' '}
-                <span className="text-gradient-animate">in one project.</span>
-              </h1>
-            </Reveal>
+            <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              <SplitText
+                text="Every tool a professional edit needs, in one project."
+                delay={80}
+                highlightFrom={6}
+              />
+            </h1>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 CutForge replaces the scattered stack of editing, grading, sound and

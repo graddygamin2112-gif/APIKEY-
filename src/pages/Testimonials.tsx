@@ -6,6 +6,7 @@ import { SiteLayout, Section, SectionHeading } from '@/components/site/SiteLayou
 import { TestimonialCard, Stars } from '@/components/site/TestimonialCard';
 import { CtaBand } from '@/components/site/CtaBand';
 import { Counter, Reveal } from '@/components/site/motion';
+import { SplitText } from '@/components/site/premium';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -77,8 +78,12 @@ const Testimonials = () => {
               <Star className="size-3.5 fill-current" /> 4.9/5 from 12,400 verified reviews
             </Badge>
             <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Editors do not switch tools lightly.{' '}
-              <span className="text-gradient">Here is why they switch to us.</span>
+              <SplitText
+                text="Editors do not switch tools lightly. Here is why they switch to us."
+                delay={80}
+                highlightFrom={6}
+                highlightClassName="text-gradient"
+              />
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               From Oscar-shortlisted documentaries to million-subscriber channels,

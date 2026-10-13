@@ -306,6 +306,8 @@ export function SplitText({
   delay = 0,
   step = 60,
   blur = true,
+  highlightFrom,
+  highlightClassName = 'text-gradient-animate',
 }: {
   text: string;
   className?: string;
@@ -313,28 +315,40 @@ export function SplitText({
   step?: number;
   /** Start each word slightly blurred and resolved (the "BlurText" reveal). */
   blur?: boolean;
+  /**
+   * Word index from which to apply `highlightClassName`. Use this to keep an
+   * entire headline — including its gradient phrase — inside SplitText, so
+   * every word shares the same mask/box treatment (no baseline drift) and the
+   * line still wraps naturally between words on narrow screens.
+   */
+  highlightFrom?: number;
+  highlightClassName?: string;
 }) {
   const words = text.split(' ');
   return (
     <span className={className}>
-      {words.map((word, i) => (
-        // The space lives *between* the masks (not inside), so words keep
-        // normal spacing and lines can still wrap at the spaces.
-        <Fragment key={`${word}-${i}`}>
-          <span className="inline-block overflow-hidden align-bottom pb-[0.14em]">
-            <span
-              className={cn(
-                'inline-block will-change-transform',
-                blur ? 'animate-rise-blur' : 'animate-rise',
-              )}
-              style={{ animationDelay: `${delay + i * step}ms` }}
-            >
-              {word}
+      {words.map((word, i) => {
+        const highlighted = highlightFrom !== undefined && i >= highlightFrom;
+        return (
+          // The space lives *between* the masks (not inside), so words keep
+          // normal spacing and lines can still wrap at the spaces.
+          <Fragment key={`${word}-${i}`}>
+            <span className="inline-block overflow-hidden align-bottom pb-[0.14em]">
+              <span
+                className={cn(
+                  'inline-block will-change-transform',
+                  highlighted && highlightClassName,
+                  blur ? 'animate-rise-blur' : 'animate-rise',
+                )}
+                style={{ animationDelay: `${delay + i * step}ms` }}
+              >
+                {word}
+              </span>
             </span>
-          </span>
-          {i < words.length - 1 ? ' ' : null}
-        </Fragment>
-      ))}
+            {i < words.length - 1 ? ' ' : null}
+          </Fragment>
+        );
+      })}
     </span>
   );
 }

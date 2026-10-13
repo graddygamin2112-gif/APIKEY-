@@ -14,6 +14,7 @@ import {
 import { SiteLayout, Section, SectionHeading } from '@/components/site/SiteLayout';
 import { CtaBand } from '@/components/site/CtaBand';
 import { Counter, Magnetic, Reveal, TiltCard } from '@/components/site/motion';
+import { SplitText } from '@/components/site/premium';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -88,12 +89,13 @@ const Tutorials = () => {
                   <GraduationCap className="size-3.5" /> {tutorials.length} courses · free forever
                 </Badge>
               </Reveal>
-              <Reveal delay={60}>
-                <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                  Learn the craft.{' '}
-                  <span className="text-gradient-animate">Borrow the shortcuts.</span>
-                </h1>
-              </Reveal>
+              <h1 className="font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+                <SplitText
+                  text="Learn the craft. Borrow the shortcuts."
+                  delay={80}
+                  highlightFrom={3}
+                />
+              </h1>
               <Reveal delay={120}>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
                   Short, focused lessons from working editors — not 40-minute rambles.
